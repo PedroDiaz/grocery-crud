@@ -30,19 +30,24 @@
 		<tr  <?php if($num_row % 2 == 1){?>class="erow"<?php }?>>
 			<?php foreach($columns as $column){?>
 			<td width='<?php echo $column_width?>%' class='<?php if(isset($order_by[0]) &&  $column->field_name == $order_by[0]){?>sorted<?php }?>'>
-				<div style="width: 100%;" class='text-left'><?php echo $row->{$column->field_name}; ?></div>
+				<div style="width: 100%;" class='text-left'>
+					<?php echo !empty($row->{$column->field_name}) ? $row->{$column->field_name} : '&nbsp;'?>
+				</div>
 			</td>
 			<?php }?>
 			<?php if(!$unset_delete || !$unset_edit || !empty($actions)){?>
 			<td align="left" width='20%'>
 				<div class='tools'>				
-					<?php if(!$unset_delete){?>
+					<?php if(!$unset_delete && $row->delete_url){?>
                     	<a href='<?php echo $row->delete_url?>' title='<?php echo $this->l('list_delete')?> <?php echo $subject?>' class="delete-row" >
                     			<span class='delete-icon'></span>
                     	</a>
                     <?php }?>
-                    <?php if(!$unset_edit){?>
-						<a href='<?php echo $row->edit_url?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>'><span class='edit-icon'></span></a>
+                    <?php if(!$unset_edit && $row->edit_url){?>
+						<a href='<?php echo "$row->edit_url$depth_url";?>' title='<?php echo $this->l('list_edit')?> <?php echo $subject?>'><span class='edit-icon'></span></a>
+					<?php }?>
+                    <?php if(!$unset_view && $row->view_url){?>
+						<a href='<?php echo "$row->view_url$depth_url";?>' title='<?php echo $this->l('list_view')?> <?php echo $subject?>'><span class='view-icon'></span></a>
 					<?php }?>
 					<?php 
 					if(!empty($row->action_urls)){

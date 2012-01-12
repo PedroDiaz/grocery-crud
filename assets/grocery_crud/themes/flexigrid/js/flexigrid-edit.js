@@ -62,10 +62,19 @@ $(function(){
 
 function goToList()
 {
-	if( confirm( message_alert_edit_form ) )
-	{
+	//if( confirm( message_alert_edit_form ) )
+	//{
 		window.location = list_url;
-	}
+	//}
+
+	return false;	
+}
+function goToView()
+{
+	//if( confirm( message_alert_edit_form ) )
+	//{
+		window.location = view_url;
+	//}
 
 	return false;	
 }

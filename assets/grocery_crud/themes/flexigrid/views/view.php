@@ -14,12 +14,13 @@
 	<div class="mDiv">
 		<div class="ftitle">
 			<div class='ftitle-left'>
-				<?php echo $this->l('form_edit'); ?> <?php echo $subject?>
+				<?php echo $this->l('form_view'); ?> <?php echo $subject?>
 			</div>
 			<div class='ftitle-right'>
-				<a href='<?php echo "$list_url$depth_url";?>' onclick='javascript: return goToList()'><?php echo $this->l('form_back_to_list'); ?></a>
-				<a href='<?php echo "$view_url/$primary_key$depth_url";?>' onclick='javascript: return goToView()'><?php //echo $this->l('list_view');?><span class='view-icon'></span></a>
-
+				<a href='<?php echo "$list_url$depth_url"; ?>' onclick='javascript: return goToList()'><?php echo $this->l('form_back_to_list'); ?></a>
+<?php if ($edit_url != '') { ?>
+				<a href='<?php echo "$edit_url/$primary_key$depth_url"; ?>' onclick='javascript: return goToEdit()'><?php //echo $this->l('list_edit'); ?><span class='edit-icon'></span></a>
+<?php } ?>
 			</div>
 			<div class='clear'></div>				
 		</div>
@@ -28,7 +29,6 @@
 		</div>	
 	</div>
 <div id='main-table-box'>	
-	<form action='<?php echo $update_url?>' method='post' id='crudForm' autocomplete='off' enctype="multipart/form-data">
 	<div class='form-div'>
 		<?php
 		$counter = 0; 
@@ -61,23 +61,18 @@
 	</div>
 	<div class="pDiv">
 		<div class='form-button-box'>
-			<input type='submit' value='<?php echo $this->l('form_update_changes'); ?>' />
-		</div>		
-		<div class='form-button-box'>
-			<input type='button' value='<?php echo $this->l('form_cancel'); ?>' onclick='javascript: return goToList()' />
-		</div>
-		<div class='form-button-box'>
 			<div class='small-loading' id='FormLoading'><?php echo $this->l('form_update_loading'); ?></div>
 		</div>		
 		<div class='clear'></div>	
 	</div>
 	</form>	
-</div>
 </div>	
 <script>
 	var validation_url = '<?php echo $validation_url?>';
-	var list_url = '<?php echo "$list_url$depth_url";?>';
-	var view_url = '<?php echo "$view_url/$primary_key$depth_url";?>';
+	var list_url = '<?php echo "$list_url$depth_url"; ?>';
+<?php if ($edit_url != '') { ?>
+	var edit_url = '<?php echo "$edit_url$depth_url"; ?>';
+<?php } ?>
 
 	var message_alert_edit_form = "<?php echo $this->l('alert_edit_form')?>";
 	var message_update_error = "<?php echo $this->l('update_error')?>";

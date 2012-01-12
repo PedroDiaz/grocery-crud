@@ -1,3 +1,6 @@
+v.1.1.8-steveoc
+	Added view mode
+	Added chaining of CRUDs
 v.1.1.8
 	Adding languages: Italian.
 	Small BUG fixes: Auto-recognize enum fields for CI 2.1, don't print "&nbsp;" if a value is empty, is useless.
