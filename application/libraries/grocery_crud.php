@@ -2,14 +2,21 @@
 /**
  * PHP grocery CRUD
  *
+ * A Codeigniter library that creates a CRUD automatically with just few lines of code.
+ *
+ * Copyright (C) 2010 - 2012  John Skoumbourdis. 
+ *
  * LICENSE
  *
- * This source file is subject to the GPL license that is bundled
- * with this package in the file licence.txt.
+ * Grocery CRUD is released with dual licensing, using the GPL v3 (license-gpl3.txt) and the MIT license (license-mit.txt).
+ * You don't have to do anything special to choose one license or the other and you don't have to notify anyone which license you are using.
+ * Please see the corresponding license file for details of these licenses.
+ * You are free to use, modify and distribute this software, but all copyright information must remain.
  *
  * @package    	grocery CRUD
- * @copyright  	Copyright (c) 2010 through 2011, John Skoumbourdis
- * @license    	http://www.gnu.org/licenses/gpl.html GNU GPL v3
+ * @copyright  	Copyright (c) 2010 through 2012, John Skoumbourdis
+ * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
+ * @version    	1.1.8
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -22,8 +29,7 @@
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @license     http://www.gnu.org/licenses   GNU License 
- * @version    	1.1.3   
+ * @license     https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt  
  * @link		http://www.grocerycrud.com/crud/view/documentation
  */
 class grocery_Field_Types
@@ -412,21 +418,6 @@ class grocery_Field_Types
 	}
 }
 
-
-/**
- * PHP grocery CRUD
- *
- * LICENSE
- *
- * This source file is subject to the GPL license that is bundled
- * with this package in the file licence.txt.
- *
- * @package    	grocery CRUD
- * @copyright  	Copyright (c) 2010 through 2011, John Skoumbourdis
- * @license    	http://www.gnu.org/licenses/gpl.html GNU GPL v3
- * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- */
-
 // ------------------------------------------------------------------------
 
 /**
@@ -436,7 +427,7 @@ class grocery_Field_Types
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.1.3  
+ * @version    	1.1.8  
  * @link		http://www.grocerycrud.com/crud/view/documentation
  */
 class grocery_Model_Driver extends grocery_Field_Types
@@ -1080,8 +1071,8 @@ class grocery_Model_Driver extends grocery_Field_Types
  * with this package in the file licence.txt.
  *
  * @package    	grocery CRUD
- * @copyright  	Copyright (c) 2010 through 2011, John Skoumbourdis
- * @license    	http://www.gnu.org/licenses/gpl.html GNU GPL v3
+ * @copyright  	Copyright (c) 2010 through 2012, John Skoumbourdis
+ * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -1094,7 +1085,7 @@ class grocery_Model_Driver extends grocery_Field_Types
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.1.3
+ * @version    	1.1.8
  */
 class grocery_Layout extends grocery_Model_Driver
 {
@@ -1269,7 +1260,7 @@ class grocery_Layout extends grocery_Model_Driver
 	
 	protected function showAddForm()
 	{
-		$this->set_js('assets/grocery_crud/themes/datatables/js/jquery-1.6.2.min.js');
+		$this->set_js('assets/grocery_crud/js/jquery-1.7.1.min.js');
 		
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
@@ -1300,7 +1291,7 @@ class grocery_Layout extends grocery_Model_Driver
 		if (!$can_edit) {
 			return $this->showViewForm($state_info);
 		}
-		$this->set_js('assets/grocery_crud/themes/datatables/js/jquery-1.6.2.min.js');
+		$this->set_js('assets/grocery_crud/js/jquery-1.7.1.min.js');
 		
 		$data 			= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
@@ -1605,7 +1596,7 @@ class grocery_Layout extends grocery_Model_Driver
 	protected function get_enum_input($field_info,$value)
 	{		
 		$input = "<select name='{$field_info->name}'>";
-		
+			
 		$options_array = explode("','",substr($field_info->db_max_length,1,-1));
 		foreach($options_array as $option)
 		{
@@ -1619,8 +1610,12 @@ class grocery_Layout extends grocery_Model_Driver
 	
 	protected function get_relation_input($field_info,$value)
 	{
-		$input = "<select name='{$field_info->name}'>";
+		$this->set_css('assets/grocery_crud/css/jquery_plugins/chosen/chosen.css');
+		$this->set_js('assets/grocery_crud/js/jquery_plugins/jquery.chosen.min.js');
+		$this->set_js('assets/grocery_crud/js/jquery_plugins/config/jquery.chosen.config.js');
 		
+		$input = "<select name='{$field_info->name}' class='chosen-select' data-placeholder='Select {$field_info->display_as}'>";
+		$input .= "<option value=''></option>";
 		$options_array = $this->get_relation_array($field_info->extras);
 		foreach($options_array as $option_value => $option)
 		{
@@ -1650,13 +1645,23 @@ class grocery_Layout extends grocery_Model_Driver
 	
 	protected function get_relation_n_n_input($field_info_type, $selected_values)
 	{	
-		$this->set_css('assets/grocery_crud/css/ui/simple/jquery-ui-1.8.10.custom.css');		
-		$this->set_css('assets/grocery_crud/css/jquery_plugins/ui.multiselect.css');
-		$this->set_js('assets/grocery_crud/js/jquery_plugins/jquery-ui-1.8.10.custom.min.js');	
-		$this->set_js('assets/grocery_crud/js/jquery_plugins/ui.multiselect.js');
-		$this->set_js('assets/grocery_crud/js/jquery_plugins/config/jquery.multiselect.js');
+		$has_priority_field = !empty($field_info_type->extras->priority_field_relation_table) ? true : false;
 		
-		$field_info 		= $this->relation_n_n[$field_info_type->name]; //As its inside here the relation_n_n exists
+		if($has_priority_field)
+		{
+			$this->set_css('assets/grocery_crud/css/ui/simple/jquery-ui-1.8.10.custom.css');	
+			$this->set_css('assets/grocery_crud/css/jquery_plugins/ui.multiselect.css');
+			$this->set_js('assets/grocery_crud/js/jquery_plugins/jquery-ui-1.8.10.custom.min.js');	
+			$this->set_js('assets/grocery_crud/js/jquery_plugins/ui.multiselect.js');
+			$this->set_js('assets/grocery_crud/js/jquery_plugins/config/jquery.multiselect.js');
+		}
+		else 
+		{
+			$this->set_css('assets/grocery_crud/css/jquery_plugins/chosen/chosen.css');
+			$this->set_js('assets/grocery_crud/js/jquery_plugins/jquery.chosen.min.js');
+			$this->set_js('assets/grocery_crud/js/jquery_plugins/config/jquery.chosen.config.js');
+		}
+		$field_info 		= $this->relation_n_n[$field_info_type->name]; //As we use this function the relation_n_n exists, so don't need to check
 		$unselected_values 	= $this->get_relation_n_n_unselected_array($field_info, $selected_values);
 		
 		if(empty($unselected_values) && empty($selected_values))
@@ -1665,8 +1670,8 @@ class grocery_Layout extends grocery_Model_Driver
 		}
 		else
 		{
-		
-			$input = "<select name='{$field_info_type->name}[]' multiple='multiple' size='8' class='multiselect'>";
+			$css_class = $has_priority_field ? 'multiselect': 'chosen-multiple-select';
+			$input = "<select name='{$field_info_type->name}[]' multiple='multiple' size='8' class='$css_class' data-placeholder='Select {$field_info_type->display_as}'>";
 			
 			if(!empty($unselected_values))
 				foreach($unselected_values as $id => $name)
@@ -1977,8 +1982,8 @@ class grocery_Layout extends grocery_Model_Driver
  * with this package in the file licence.txt.
  *
  * @package    	grocery CRUD
- * @copyright  	Copyright (c) 2010 through 2011, John Skoumbourdis
- * @license    	http://www.gnu.org/licenses/gpl.html GNU GPL v3
+ * @copyright  	Copyright (c) 2010 through 2012, John Skoumbourdis
+ * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -1991,7 +1996,7 @@ class grocery_Layout extends grocery_Model_Driver
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.1.3
+ * @version    	1.1.8
  */
 class grocery_States extends grocery_Layout
 {
@@ -2333,8 +2338,8 @@ class grocery_States extends grocery_Layout
  * with this package in the file licence.txt.
  *
  * @package    	grocery CRUD
- * @copyright  	Copyright (c) 2010 through 2011, John Skoumbourdis
- * @license    	http://www.gnu.org/licenses/gpl.html GNU GPL v3
+ * @copyright  	Copyright (c) 2010 through 2012, John Skoumbourdis
+ * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -2347,8 +2352,7 @@ class grocery_States extends grocery_Layout
  *
  * @package    	grocery CRUD 
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.1.3  
- * @license     http://www.gnu.org/licenses/   GNU License
+ * @license     https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
  * @link		http://www.grocerycrud.com/crud/view/documentation
  */
 class grocery_CRUD extends grocery_States
@@ -3439,53 +3443,10 @@ class grocery_CRUD extends grocery_States
 	 * @param bool $has_plural
 	 * @return grocery_CRUD
 	 */
-	public function set_subject( $subject , $has_plural = true)
-	{
-
-		if(!is_bool($has_plural))
-		{
-			$has_plural = true;
-			throw new Exception('This variable must be boolean.', 5);
-		}
-			
-		$subject = strip_tags(trim($subject));
-		$subject_plural = $subject;
-		
-		if($has_plural)
-		{		
-			$end = substr($subject_plural, -1);
-	
-			if ($end == 'y')
-			{
-				$vowels = array('a', 'e', 'i', 'o', 'u');
-				$subject_plural = in_array(substr($subject_plural, -2, 1), $vowels) ? $subject_plural.'s' : substr($subject_plural, 0, -1).'ies';
-			}
-			elseif ($end == 'h')
-			{
-				if (substr($subject_plural, -2) == 'ch' OR substr($subject_plural, -2) == 'sh')
-				{
-					$subject_plural .= 'es';
-				}
-				else
-				{
-					$subject_plural .= 's';
-				}
-			}
-			elseif ($end == 's')
-			{
-				if ($has_plural)
-				{
-					$subject_plural .= 'es';
-				}
-			}
-			else
-			{
-				$subject_plural .= 's';
-			}	
-		}
-		
+	public function set_subject( $subject )
+	{		
 		$this->subject 			= $subject;
-		$this->subject_plural 	= $subject_plural;
+		$this->subject_plural 	= $subject;
 			
 		return $this;
 	}
@@ -3586,7 +3547,7 @@ class grocery_Form_validation {
 	protected $CI;
 	public $_field_data			= array();
 	public $_config_rules		= array();
-	public 	  $_error_array		= array();
+	public $_error_array		= array();
 	public $_error_messages		= array();
 	public $_error_prefix		= '<p>';
 	public $_error_suffix		= '</p>';
